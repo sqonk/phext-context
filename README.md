@@ -47,9 +47,9 @@ Out of the box the library supports the following managers for:
 
 ## Examples
 
-Open File handle for writing and output a string. The context manager will open the file and request the appropriate lock.
+Open a file handle for writing and output a string. The context manager will open the file and request the appropriate lock.
 
-Once your callback as completed, the file handle will release the lock and close the resouce.
+Once your callback has completed, the file handle will release the lock and close the resouce.
 
 ``` php
 use sqonk\phext\context\context;
@@ -75,14 +75,22 @@ Supress all exceptions and errors while executing a block of code:
 ``` php
 use sqonk\phext\context\context;
 
-// the following block of code throws an exception which is caught and ignored, leaving the program uninterupted.
+/* 
+	The following block of code throws an exception which is caught 
+	and ignored, leaving the program uninterupted.
+	
+	Also note the use of while() on the callback. 'while' is an alias of 'do'
+	and with some context managers makes more syntactic sence.
+*/
 context::supress_errors()->while(function() {
     println('throwing an exception');
     throw new Exception('This is a test exception.');
 });
 ```
 
-Execute a transaction on a PDO object. The context manager will initiate the transaction before passing off the instance to the callback. Once completed the transaction will be completed. If an exception is raised at any point then the transaction is rolled back.
+Execute a transaction on a PDO object. The context manager will initiate the transaction before passing off the instance to the callback. Once completed the transaction will be comitted. 
+
+If an exception is raised at any point then the transaction is rolled back.
 
 ``` php
 use sqonk\phext\context\context;
