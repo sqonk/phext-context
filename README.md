@@ -80,7 +80,7 @@ use sqonk\phext\context\context;
 	and ignored, leaving the program uninterupted.
 	
 	Also note the use of while() on the callback. 'while' is an alias of 'do'
-	and with some context managers makes more syntactic sence.
+	and with some context managers makes more syntactic sense.
 */
 context::supress_errors()->while(function() {
     println('throwing an exception');
