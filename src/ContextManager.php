@@ -262,7 +262,6 @@ class PDOTransaction extends ContextManager
             throw $error;
         }
         finally {
-            unset($this->pdo);
             restore_error_handler();
         }
     }
@@ -296,7 +295,6 @@ class MySQLTransaction extends ContextManager
             throw $error;
         }
         finally {
-            $this->mysql->close();
             restore_error_handler();
         }
     } 
