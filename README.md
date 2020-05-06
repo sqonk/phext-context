@@ -44,6 +44,83 @@ Out of the box the library supports the following managers for:
 * Zip Files
 * CURL
 
+Available Methods
+-----------------
+
+``` php
+/* 
+    Open a file in the desired mode and then pass it to the callback. The callback 
+    should accept one parameter, which is the file handle (resource).
+
+    Exceptions and errors will be thrown but the file will be safely closed off.
+*/
+context::file(string $filePath, string $mode = 'r');
+
+/*
+    Open a image resource (using GD) and pass it to the callback. The callback 
+    should accept just one parameter: the image resouce.
+*/
+context::image(string $filePath);
+
+/*
+    Perform a block of code in the callback and ignore or all possible errors
+    and exceptions that occur. 
+*/
+context::supress_errors();
+
+/*
+    Perform a block of code while preventing any output to STDOut (console in 
+    CLI SAPI or the browser for the web.)
+*/
+context::no_output();
+
+/*
+    Execute and attempt to commit a PDO database transaction. If an error is thrown at 
+    any point the transaction will be rolled back.
+*/
+context::pdo_transaction(\PDO $connection);
+
+/*
+    Execute and attempt to commit a MySQL database transaction. If an error is thrown at 
+    any point the transaction will be rolled back.
+*/
+context::mysql_transaction(\mysqli $connection);
+
+/*
+    Initialise a cURL handle. This curl handle is set to the given URL but no further
+    options are set.
+
+    NOTE:   If you want to perform a simple GET or POST request without much effort, without 
+            need for customisation, you may be better off using the network utility class 
+            in the core package.
+*/
+context::curl(string $url = '');
+
+/*
+    Open a file in 'read' mode and download the contents in chunks, passing each chunk
+    to the callback as it is received. 
+
+    The default read chunk size is 1024 * 1024, which can be adjusted by passing in your
+    own chunk multiplier. Just be aware that what ever value you pass in will be squared
+    to form the final chunk size.
+
+    This method uses a file context as its parent context manager and thus does not introduce
+    any further exception handling.
+*/
+context::stream(string $filePath, int $chunkMultiplier = 1024);
+
+/*
+    Open a zip file at the specified location and in the desired mode, then pass 
+    it to the callback. The callback  should accept one parameter, which is the 
+    zip handle (resource).
+
+    The default behaviour is to open or create a zip archive for outputting data to. 
+    The mode can be changed by passing in the relevant ZipArchive constant.
+
+    Exceptions and errors will be thrown but the file will be safely closed off.
+*/
+context::zip(string $filePath, $mode = \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+```
 
 ## Examples
 
