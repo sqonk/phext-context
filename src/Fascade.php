@@ -85,10 +85,6 @@ class context
 	/*
 	    Initialise a cURL handle. This curl handle is set to the given URL but no further
 	    options are set.
-
-	    NOTE:   If you want to perform a simple GET or POST request without much effort, without 
-	            need for customisation, you may be better off using the network utility class 
-	            in the core package.
 	*/
 	static public function curl(string $url = '')
 	{
