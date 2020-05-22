@@ -44,147 +44,77 @@ Out of the box the library supports the following managers for:
 * Zip Files
 * CURL
 
+
+
 Available Methods
 -----------------
 
-``` php
-/* 
-    Open a file in the desired mode and then pass it to the callback. The callback 
-    should accept one parameter, which is the file handle (resource).
-
-    Exceptions and errors will be thrown but the file will be safely closed off.
-*/
-context::file(string $filePath, string $mode = 'r');
-
-/*
-    Open a image resource (using GD) and pass it to the callback. The callback 
-    should accept just one parameter: the image resouce.
-*/
-context::image(string $filePath);
-
-/*
-    Perform a block of code in the callback and ignore or all possible errors
-    and exceptions that occur. 
-*/
-context::supress_errors();
-
-/*
-    Perform a block of code while preventing any output to STDOut (console in 
-    CLI SAPI or the browser for the web.)
-*/
-context::no_output();
-
-/*
-    Execute and attempt to commit a PDO database transaction. If an error is thrown at 
-    any point the transaction will be rolled back.
-*/
-context::pdo_transaction(\PDO $connection);
-
-/*
-    Execute and attempt to commit a MySQL database transaction. If an error is thrown at 
-    any point the transaction will be rolled back.
-*/
-context::mysql_transaction(\mysqli $connection);
-
-/*
-    Initialise a cURL handle. This curl handle is set to the given URL but no further
-    options are set.
-
-    NOTE:   If you want to perform a simple GET or POST request without much effort, without 
-            need for customisation, you may be better off using the network utility class 
-            in the core package.
-*/
-context::curl(string $url = '');
-
-/*
-    Open a file in 'read' mode and download the contents in chunks, passing each chunk
-    to the callback as it is received. 
-
-    The default read chunk size is 1024 * 1024, which can be adjusted by passing in your
-    own chunk multiplier. Just be aware that what ever value you pass in will be squared
-    to form the final chunk size.
-
-    This method uses a file context as its parent context manager and thus does not introduce
-    any further exception handling.
-*/
-context::stream(string $filePath, int $chunkMultiplier = 1024);
-
-/*
-    Open a zip file at the specified location and in the desired mode, then pass 
-    it to the callback. The callback  should accept one parameter, which is the 
-    zip handle (resource).
-
-    The default behaviour is to open or create a zip archive for outputting data to. 
-    The mode can be changed by passing in the relevant ZipArchive constant.
-
-    Exceptions and errors will be thrown but the file will be safely closed off.
-*/
-context::zip(string $filePath, $mode = \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+```php
+use \sqonk\phext\context\context;
 ```
 
-## Examples
 
-Open a file handle for writing and output a string. The context manager will open the file and request the appropriate lock.
 
-Once your callback has completed, the file handle will release the lock and close the resouce.
+##### file
 
-``` php
-use sqonk\phext\context\context;
+```php
+static public function file(string $filePath, string $mode = 'r')
+```
 
+Open a file in the desired mode and then pass it to the callback. The callback should accept one parameter, which is the file handle (resource).
+
+Exceptions and errors will be thrown but the file will be safely closed off.
+
+Example:
+
+```php
+// output some sample text to the file 'out.txt'.
 context::file('out.txt', 'w')->do(function($fh) {
     fwrite($fh, "This is a test");
     fflush($fh);
 });
 ```
 
-Similar to a file context, stream can be used for reading in chunks of a large file.
 
-``` php
-use sqonk\phext\context\context;
 
+##### stream
+
+```php
+static public function stream(string $filePath, int $chunkMultiplier = 1024)
+```
+
+Open a file in 'read' mode and download the contents in chunks, passing each chunk to the callback as it is received. 
+
+The default read chunk size is 1024 * 1024, which can be adjusted by passing in your own chunk multiplier. Just be aware that what ever value you pass in will be squared to form the final chunk size.
+
+This method uses a file context as its parent context manager and thus does not introduce any further exception handling.
+
+Example:
+
+```php
 context::stream('path/to/large/file.mov')->do(function($buffer) {
-    println(strlen($buffer)); // print out the chunk of data read from the input stream.
+    println(strlen($buffer)); // print out each chunk of data read from the input stream.
 });
 ```
 
-Supress all exceptions and errors while executing a block of code:
 
-``` php
-use sqonk\phext\context\context;
 
-/* 
-	The following block of code throws an exception which is caught 
-	and ignored, leaving the program uninterupted.
-	
-	Also note the use of while() on the callback. 'while' is an alias of 'do'
-	and with some context managers makes more syntactic sense.
+##### image
+
+```php
+static public function image(string $filePath)
+```
+
+Open a image resource (using GD) and pass it to the callback. The callback should accept just one parameter: the image resouce.
+
+''
+
+Example:
+
+```php
+/*
+		Open an image, modify it and output the result.
 */
-context::supress_errors()->while(function() {
-    println('throwing an exception');
-    throw new Exception('This is a test exception.');
-});
-```
-
-Execute a transaction on a PDO object. The context manager will initiate the transaction before passing off the instance to the callback. Once completed the transaction will be comitted. 
-
-If an exception is raised at any point then the transaction is rolled back.
-
-``` php
-use sqonk\phext\context\context;
-
-$pdo = ... // your PDO instance, set up as required.
-
-context::pdo_transaction($pdo)->do(function($pdo) {
-    // perform operations on the pdo instance.
-});
-
-```
-
-Open an image, modify it and output the result.
-
-``` php
-use sqonk\phext\context\context;
-
 context::image('/path/to/image.jpg')->do(function($img) {
     # greyscale
     imagefilter($img, IMG_FILTER_GRAYSCALE);
@@ -195,13 +125,111 @@ context::image('/path/to/image.jpg')->do(function($img) {
     # output result
     imagepng($img, 'modifiedImage.png');
 });
-
 ```
+
+
+
+##### supress_errors
+
+```php
+static public function supress_errors()
+```
+
+Perform a block of code in the callback and ignore or all possible errors and exceptions that occur. 
+
+Example:
+
+```php
+/*
+    The following block of code throws an exception which is caught 
+    and ignored, leaving the program uninterupted.
+
+    Also note the use of while() on the callback. 'while' is an alias of 'do'
+    and with some context managers makes more syntactic sense.
+*/
+context::supress_errors()->while(function() {
+    println('throwing an exception');
+    throw new Exception('This is a test exception.');
+});
+```
+
+
+
+##### no_output
+
+```php
+static public function no_output()
+```
+
+Perform a block of code while preventing any output to std out (console in CLI SAPI or the browser for the web.)
+
+
+
+##### pdo_transaction
+
+```php
+static public function pdo_transaction(\PDO $connection)
+```
+
+Execute and attempt to commit a PDO database transaction. If an error is thrown at any point the transaction will be rolled back.
+
+Example:
+
+```php
+/*
+		Execute a transaction on a PDO object. The context manager will initiate 
+		the transaction before passing off the instance to the callback. Once completed 
+		the transaction will be comitted. 
+
+		If an exception is raised at any point then the transaction is rolled back.
+*/
+$pdo = ... // your PDO instance, set up as required.
+
+context::pdo_transaction($pdo)->do(function($pdo) {
+    // perform operations on the pdo instance.
+});
+```
+
+
+
+##### mysql_transaction
+
+```php
+static publlic function mysql_transaction(\mysqli $connection)
+```
+
+Execute and attempt to commit a MySQL database transaction. If an error is thrown at any point the transaction will be rolled back.
+
+
+
+##### curl
+
+```php
+static public function curl(string $url = '')
+```
+
+Initialise a cURL handle. This curl handle is set to the given URL but no further options are set.
+
+
+
+##### zip
+
+``` php
+static public function zip(string $filePath, $mode = \ZipArchive::CREATE | \ZipArchive::OVERWRITE)
+```
+
+Open a zip file at the specified location and in the desired mode, then pass it to the callback. The callback  should accept one parameter, which is the zip handle (resource).
+
+The default behaviour is to open or create a zip archive for outputting data to. The mode can be changed by passing in the relevant ZipArchive constant.
+
+Exceptions and errors will be thrown but the file will be safely closed off.
+
+
 
 ## Credits
 
 Theo Howell
- 
+
 ## License
 
 The MIT License (MIT). Please see [License File](license.txt) for more information.
