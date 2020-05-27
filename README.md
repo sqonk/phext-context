@@ -63,7 +63,7 @@ static public function file(string $filePath, string $mode = 'r')
 
 Open a file in the desired mode and then pass it to the callback. The callback should accept one parameter, which is the file handle (resource).
 
-Exceptions and errors will be thrown but the file will be safely closed off.
+Exceptions and errors can be thrown but the file will be safely closed off.
 
 Example:
 
@@ -71,11 +71,35 @@ Example:
 // output some sample text to the file 'out.txt'.
 context::file('out.txt', 'w')->do(function($fh) {
     fwrite($fh, "This is a test");
-    fflush($fh);
 });
 ```
 
 
+
+##### tmpfile
+
+```php
+static public function tmpfile()
+```
+
+Open a temporary file and pass it to the callback. The callback should accept one parameter, which is the file handle (resource).
+
+Exceptions and errors can be thrown but the file will be safely closed off.
+
+Example:
+
+```php
+// output some sample text to the temp file 'out.txt'.
+context::tmpfile()->do(function($fh) {
+    fwrite($fh, "This is a test");
+    rewind($fh);
+    println('contents:', fread($fh, 50));
+});
+```
+
+
+
+  
 
 ##### stream
 

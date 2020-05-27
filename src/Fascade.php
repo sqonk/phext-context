@@ -36,6 +36,17 @@ class context
 	{
 	    return new FileHandle($filePath, $mode);
 	}
+    
+    /*
+        Open a temporary file and pass it to the callback. The callback 
+	    should accept one parameter, which is the file handle (resource).
+    
+        Exceptions and errors will be thrown but the file will be safely closed off.
+    */
+    static public function tmpfile()
+    {
+        return new TmpFileHandle;
+    }
 
 	/*
 	    Open a image resource (using GD) and pass it to the callback. The callback 

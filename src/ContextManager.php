@@ -100,8 +100,7 @@ class FileHandle extends ContextManager
         $this->installErrorHandler();
         $fh = null;
         try {
-            $fh = fopen($this->path, $this->mode);
-            if ($fh === false)
+            if (! $fh = fopen($this->path, $this->mode))
                 throw new \RuntimeException("[{$this->path}] could not be opened, empty handle returned.");
 			$lockType = arrays::contains(['r', 'r+'], $this->mode) ? LOCK_SH : LOCK_EX;
 			@flock($fh, $lockType);
@@ -137,6 +136,27 @@ class StreamHandle extends FileHandle
                 $do($buffer);
             }
         });
+    }
+}
+
+class TmpFileHandle extends ContextManager
+{
+    public function do(callable $do)
+    {
+        $this->installErrorHandler();
+        $fh = null;
+        try {
+            if (! $fh = tmpfile())
+                throw new \RuntimeException('A temporary file could not be created.');
+			
+            $do($fh);
+        }
+        finally {
+            if ($fh) 
+				@fclose($fh);
+            
+            restore_error_handler();
+        }
     }
 }
 
