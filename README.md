@@ -131,8 +131,6 @@ static public function image(string $filePath)
 
 Open a image resource (using GD) and pass it to the callback. The callback should accept just one parameter: the image resouce.
 
-''
-
 Example:
 
 ```php
@@ -159,7 +157,7 @@ context::image('/path/to/image.jpg')->do(function($img) {
 static public function supress_errors()
 ```
 
-Perform a block of code in the callback and ignore or all possible errors and exceptions that occur. 
+Perform a block of code in the callback and ignore all possible errors and exceptions that occur. 
 
 Example:
 
