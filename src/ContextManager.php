@@ -354,7 +354,8 @@ class ZipContext extends ContextManager
             $do($zip);
         }
         finally {
-            $zip->close();
+            if (isset($zip) && $zip instanceof \ZipArchive)
+                $zip->close();
             restore_error_handler();
         }
     }
