@@ -24,5 +24,8 @@
 		"ext-mysqli": "If you wish to use the MySQL transaction context manager.",
 		"ext-pdo": "If you wish to use the PDO transaction context manager.",
 		"ext-zip": "If you wish to use the ZIP context manager."
-	}
+	},
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
 }
