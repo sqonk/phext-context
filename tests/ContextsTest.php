@@ -83,4 +83,55 @@ class ContextsTest extends TestCase
             // should not get to this point.
         });
     }
+    
+    protected function pixels($img)
+    {
+        $width = imagesx($img);
+        $height = imagesy($img);
+        $pixels = [];
+    
+        foreach (sequence($height-1) as $y) {
+            foreach (sequence($width-1) as $x)
+            {
+                $rgb = imagecolorat($img, $x, $y);
+                $colours = imagecolorsforindex($img, $rgb);
+                $pixels[$y][$x] = $colours;
+            }
+        }
+        return $pixels;    
+    }
+    
+    protected function gdAvailable()
+    {
+        $exists = function_exists('imagecreatetruecolor') && function_exists('imagefilledrectangle');
+        if (! $exists) {
+            error_log("### GD not available, unable to perform charting tests.");
+        }
+        return $exists;
+    }
+    
+    public function testImages()
+    {
+        if (! $this->gdAvailable())
+            return;
+        
+        $size = 250;
+        context::new_image($size, $size)->do(function($img) use ($size) {
+    
+            $mid = $size / 2; $start = $mid - 25;
+            imagefilledrectangle($img, 0, 0, $size-1, $size-1, imagecolorallocate($img,255,255,255));
+            imagefilledrectangle($img, $start, $start, $start+50, $start+50, imagecolorallocate($img,0,0,0));
+
+            context::image(__DIR__.'/newimage.png')->do(function($example) use ($img, $size) {
+                $rpixels = $this->pixels($img);
+                $epixels = $this->pixels($example);
+        
+                foreach (sequence(0, $size-1) as $y) {
+                    foreach (sequence(0, $size-1) as $x) {
+                        $this->assertEquals($epixels[$y][$x], $rpixels[$y][$x], "pixels at $y:$x not equal.");
+                    }
+                }   
+            });
+        });
+    }
 }
