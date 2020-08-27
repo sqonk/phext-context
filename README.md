@@ -169,8 +169,8 @@ Example:
 */
 context::new_image(500, 500)->do(function($img) {
   # white background with a black square.
-	imagefilledrectangle($img, 0, 0, 499, 499, imagecolorallocate($img,255,255,255));
-	imagefilledrectangle($img, 220, 220, 320, 320, imagecolorallocate($img,0,0,0));
+  imagefilledrectangle($img, 0, 0, 499, 499, imagecolorallocate($img,255,255,255));
+  imagefilledrectangle($img, 220, 220, 320, 320, imagecolorallocate($img,0,0,0));
   
   # output to file.
   imagepng($img, 'out.png');
