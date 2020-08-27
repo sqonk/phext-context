@@ -56,6 +56,17 @@ class context
 	{
 	    return new Image($filePath);
 	}
+    
+	/*
+	    Create a new image resource (using GD) with the specified width and height and 
+        pass it to the callback. 
+    
+        The callback should accept just one parameter: the image resouce.
+	*/
+	static public function new_image(int $width, int $height)
+	{
+	    return new NewImage($width, $height);
+	}
 
 	/*
 	    Perform a block of code in the callback and ignore or all possible errors

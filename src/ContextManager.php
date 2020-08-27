@@ -214,7 +214,36 @@ class Image extends ContextManager
     }
 }
 
-
+class NewImage extends ContextManager
+{
+    public function __construct(int $width, int $height)
+    {
+        if (! function_exists('imagecreatetruecolor'))
+            throw new \RuntimeException("The new_image requires that your PHP runtime has the GD extension loaded.");
+        $this->w = $width;
+        $this->h = $height;
+    }
+    
+    public function do(callable $do)
+    {
+        $this->installErrorHandler();
+        try
+        {
+            if (! $img = imagecreatetruecolor($this->w, $this->h))
+                throw new \RuntimeException("A new image could not be created.");
+            
+            $do($img);
+        }
+        catch (\Throwable $error) {
+            throw $error;
+        }
+        finally {
+            if ($img)
+                imagedestroy($img);
+            restore_error_handler();
+        }
+    }
+}
 
 class SupressOutput extends ContextManager
 {
