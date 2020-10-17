@@ -3,8 +3,8 @@
     "description": "Contexts create a block level scope on a resource and automatically manage the creation and cleanup of that resource irrespective of any exceptions that arise while in use.",
     "type": "library",
     "require": {
-		"php": "^7.3",
-        "sqonk/phext-core": "^0.3.7.3"
+		"php": "^7.3 || ^8.0.0",
+        "sqonk/phext-core": "^0.3.7 || ^0.4 || ^1"
     },
 	"keywords": ["resources","file","teardown","context manager"],
     "license": "MIT",
