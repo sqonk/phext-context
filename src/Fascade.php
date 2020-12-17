@@ -83,7 +83,7 @@ class context
 	*/
 	static public function no_output()
 	{
-	    return new NoOutput();
+	    return new SupressOutput;
 	}
 
 	/*
