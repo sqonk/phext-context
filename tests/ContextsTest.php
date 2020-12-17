@@ -62,6 +62,17 @@ class ContextsTest extends TestCase
         $this->assertSame(0, ob_get_length());
     }
     
+    public function testCapturedOutput()
+    {
+        $expected = 'This is a test.';
+        
+        $output = context::captured_output()->do(function() use ($expected) {
+            print $expected;
+        });
+        
+        $this->assertSame($expected, $output);
+    }
+    
     public function testCurl()
     {
         $url = 'https://sqonk.com/opensource/phext/context/tests/samplefile.txt';

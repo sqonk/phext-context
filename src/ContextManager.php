@@ -261,6 +261,23 @@ class SupressOutput extends ContextManager
     }
 }
 
+class CapturedOutput extends ContextManager
+{
+    public function do(callable $do)
+    {
+        $this->installErrorHandler();
+        ob_start();
+        try 
+        {
+            $do();
+            return ob_get_contents();
+        } 
+        finally {
+            ob_end_clean();
+        }
+    }
+}
+
 class CURL extends ContextManager
 {
     protected $url;

@@ -77,14 +77,23 @@ class context
 	    return new SupressErrors();
 	}
 
-	/*
-	    Perform a block of code while preventing any output to STDOut (console in 
-	    CLI SAPI or the browser for the web.)
-	*/
+	/**
+	 * Perform a block of code while preventing any output to STDOut (console in 
+	 * CLI SAPI or the browser for the web.)
+	 */
 	static public function no_output()
 	{
 	    return new SupressOutput;
 	}
+    
+    /**
+     * Start a new output buffer and return the contents as the result. Will return NULL
+     * on failure. 
+     */
+    static public function captured_output()
+    {
+        return new CapturedOutput;
+    }
 
 	/*
 	    Execute and attempt to commit a PDO database transaction. If an error is thrown at any point
