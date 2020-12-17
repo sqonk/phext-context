@@ -41,6 +41,7 @@ Out of the box the library supports the following managers for:
 * PDO Transactions
 * Error/Exception supression
 * Output buffer supression
+* Output buffer capture
 * Zip Files
 * CURL
 
@@ -212,6 +213,30 @@ static public function no_output()
 ```
 
 Perform a block of code while preventing any output to std out (console in CLI SAPI or the browser for the web.)
+
+
+
+##### captured_output
+
+```php
+static public function captured_output()
+```
+
+Perform a block of code from within a nested output buffer and return the result from `ob_get_contents()`.
+
+Example:
+
+```php
+$output = context::captured_output()->do(function() {
+  // Print some text to the output. As the context manager wraps the callback
+  // between ob_start() and ob_end_clean(), the output is captured and returned
+  // to the caller.
+	print 'This is a test.';
+});
+
+println($output);
+// will print "This is a test."
+```
 
 
 
