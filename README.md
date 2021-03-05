@@ -14,11 +14,6 @@ This implementation attempts to keep the code readable and be self-explanatory a
 In many of the methods a special dedicated error handler is temporarily injected to convert PHP errors into raised Exceptions. Keep in mind that while inside a context manager any standard error handling systems your code is using will be overriden until the manager exits back into to the parent scope.
 
 
-## About PHEXT
-
-The PHEXT package is a set of libraries for PHP that aim to solve common problems with a syntax that helps to keep your code both concise and readable.
-
-PHEXT aims to not only be useful on the web SAPI but to also provide a productivity boost to command line scripts, whether they be for automation, data analysis or general research.
 
 ## Install
 
@@ -27,6 +22,7 @@ Via Composer
 ``` bash
 $ composer require sqonk/phext-context
 ```
+
 
 
 Context Features
