@@ -1,11 +1,11 @@
 # PHEXT Context
 
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
-[![License](https://sqonk.com/opensource/license.svg)](license.txt) [![Build Status](https://img.shields.io/travis/sqonk/phext-context/master.svg?style=flat-square)](https://travis-ci.org/sqonk/phext-context)
+[![Minimum PHP Version](https://img.shields.io/badge/PHP-%3E%3D%208-yellow)](https://php.net/)
+[![License](https://sqonk.com/opensource/license.svg)](license.txt) [![Build Status](https://app.travis-ci.com/sqonk/phext-context.svg?branch=master)](https://app.travis-ci.com/sqonk/phext-context)
 
 Contexts create a block level scope on a resource and automatically manage the creation and cleanup of that resource irrespective of any exceptions that arise while in use, the primary intention being to help remove the possibility of resource leaks. On top of that they aid in keeping your code lean by automating the standard logic involved with operating such resources.
 
-They are a phsuedo implementation of the context managers in Python. While PHP 7 and earlier do not currently allow for a 1:1 elegant solution, the below intepretation makes use of function callbacks to achieve something similar.
+They are a pseudo implementation of the context managers in Python. While PHP 7 and earlier do not currently allow for a 1:1 elegant solution, the below interpretation makes use of function callbacks to achieve something similar.
 
 While alternative implementations make clever use of generators and 'yield' to push the resources to a 1-cycle foreach loop, the readability is somewhat lost when you follow the code.
 
