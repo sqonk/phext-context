@@ -1,6 +1,7 @@
 language: php
 php:
     - 8.0
+    - 8.1.0
 env:
     matrix:
         - COMPOSER_FLAGS="--prefer-lowest"
