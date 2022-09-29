@@ -216,6 +216,9 @@ class Image extends ContextManager
 
 class NewImage extends ContextManager
 {
+    protected int $w;
+    protected int $h;
+    
     public function __construct(int $width, int $height)
     {
         if (! function_exists('imagecreatetruecolor'))
