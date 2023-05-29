@@ -1,7 +1,7 @@
 # PHEXT Context
 
 [![Minimum PHP Version](https://img.shields.io/badge/PHP-%3E%3D%208-yellow)](https://php.net/)
-[![License](https://sqonk.com/opensource/license.svg)](license.txt) [![Build Status](https://app.travis-ci.com/sqonk/phext-context.svg?branch=master)](https://app.travis-ci.com/sqonk/phext-context)
+[![License](https://sqonk.com/opensource/license.svg)](license.txt)
 
 Contexts create a block level scope on a resource and automatically manage the creation and cleanup of that resource irrespective of any exceptions that arise while in use, the primary intention being to help remove the possibility of resource leaks. On top of that they aid in keeping your code lean by automating the standard logic involved with operating such resources.
 
